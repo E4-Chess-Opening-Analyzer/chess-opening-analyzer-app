@@ -1,40 +1,78 @@
+import 'package:app/enums/chess_piece_type.dart';
+import 'package:app/models/piece.dart';
+import 'package:app/states/gameboard/gameboard_cubit.dart';
+import 'package:app/states/gameboard/gameboard_state.dart';
 import 'package:app/views/atoms/case.dart';
 import 'package:app/views/atoms/chessboard.dart';
-import 'package:app/models/game_board.dart' as gb;
 import 'package:app/views/molecules/positionned_piece.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GameBoard extends StatelessWidget {
-  final gb.GameBoard gameBoard;
   const GameBoard({
     super.key,
-    required this.gameBoard,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const Chessboard(),
-        for (int i = 0; i < Chessboard.nbCasesRows; i++)
-          for (int j = 0; j < Chessboard.nbCasesColumns; j++)
-            Case(
-              row: i,
-              column: j,
-              onPressed: () {
-                print("Case $i, $j");
+    return BlocBuilder<GameboardCubit, GameboardState>(
+      builder: (BuildContext context, GameboardState state) {
+        return Stack(
+          children: <Widget>[
+            const Chessboard(),
+            for (int i = 0; i < Chessboard.nbCasesRows; i++)
+              for (int j = 0; j < Chessboard.nbCasesColumns; j++) ...<Widget>{
+                Case(
+                  row: i,
+                  column: j,
+                  isAPossibleMove: state is GameboardSelectedPieceState
+                      ? state.gameBoard
+                          .getPossibleMoves(state.piece)
+                          .any(((int, int) move) => move == (i, j))
+                      : false,
+                  onPressed: () {
+                    if (state is GameboardSelectedPieceState) {
+                      context
+                          .read<GameboardCubit>()
+                          .moveSelectedPieceTo(i, j);
+                    }
+                  },
+                ),
               },
-            ),
-        for (var piece in gameBoard.pieces)
-          PositionnedPiece(
-            piece: piece.type,
-            row: piece.row.toDouble(),
-            column: piece.column.toDouble(),
-            onPressed: () {
-              print(piece);
-            },
-          ),
-      ],
+            for (Piece piece in state.gameBoard.pieces)
+              PositionnedPiece(
+                piece: piece.type,
+                row: piece.row.toDouble(),
+                column: piece.column.toDouble(),
+                onPressed: () {
+                  if (state is GameboardSelectedPieceState &&
+                      state.piece == piece) {
+                    context.read<GameboardCubit>().unselectPiece();
+                  } else if (state is GameboardSelectedPieceState &&
+                      state.piece != piece) {
+                        if (state.gameBoard
+                            .getPossibleMoves(state.piece)
+                            .any(((int, int) move) =>
+                                move == (piece.row, piece.column))) {
+                          context.read<GameboardCubit>().moveSelectedPieceTo(
+                            piece.row,
+                            piece.column,
+                          );
+                        } else {
+                          if (state.gameBoard.isLightPieceTurn() == piece.type.isLight) {
+                            context.read<GameboardCubit>().selectPiece(piece);
+                          }
+                        }
+                  } else {
+                    if (state.gameBoard.isLightPieceTurn() == piece.type.isLight) {
+                      context.read<GameboardCubit>().selectPiece(piece);
+                    }
+                  }
+                },
+              ),
+          ],
+        );
+      },
     );
   }
 }

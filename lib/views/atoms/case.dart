@@ -2,16 +2,18 @@ import 'package:app/views/atoms/chessboard.dart';
 import 'package:flutter/material.dart';
 
 class Case extends StatelessWidget {
-  final int row;
-  final int column;
-  final VoidCallback onPressed;
-
   const Case({
-    super.key,
     required this.row,
     required this.column,
     required this.onPressed,
+    super.key,
+    this.isAPossibleMove = false,
   });
+
+  final int row;
+  final int column;
+  final VoidCallback onPressed;
+  final bool isAPossibleMove;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,16 @@ class Case extends StatelessWidget {
         child: Container(
           width: (MediaQuery.of(context).size.width - Chessboard.padding) / Chessboard.nbCasesRows,
           height: (MediaQuery.of(context).size.width - Chessboard.padding) / Chessboard.nbCasesColumns,
-          color: Colors.transparent
+          color: Colors.transparent,
+          child: isAPossibleMove
+              ? Container(
+                  margin: EdgeInsets.all(((MediaQuery.of(context).size.width - Chessboard.padding) / Chessboard.nbCasesRows) / 5),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 89, 152, 183).withAlpha(150),
+                    shape: BoxShape.circle,
+                  ),
+                )
+              : null,
         ),
       ),
     );

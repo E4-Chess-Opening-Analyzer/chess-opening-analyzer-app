@@ -4,18 +4,18 @@ import 'package:app/views/atoms/piece.dart';
 import 'package:flutter/material.dart';
 
 class PositionnedPiece extends StatelessWidget {
+  const PositionnedPiece({
+    required this.piece,
+    required this.row,
+    required this.column,
+    super.key,
+    this.onPressed,
+  });
+
   final ChessPieceType piece;
   final double row;
   final double column;
   final VoidCallback? onPressed;
-
-  const PositionnedPiece({
-    super.key,
-    required this.piece,
-    required this.row,
-    required this.column,
-    this.onPressed,
-  });
 
   @override
   Widget build(BuildContext context) {

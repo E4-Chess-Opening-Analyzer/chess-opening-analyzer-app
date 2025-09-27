@@ -3,8 +3,13 @@ import 'package:app/views/atoms/chessboard.dart';
 import 'package:flutter/material.dart';
 
 class Piece extends StatelessWidget {
+  const Piece({
+    required this.piece,
+    super.key,
+  });
+  
   final ChessPieceType piece;
-  const Piece({super.key, required this.piece});
+
   @override
   Widget build(BuildContext context) {
     return Image.asset(
