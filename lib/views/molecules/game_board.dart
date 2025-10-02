@@ -25,8 +25,8 @@ class GameBoard extends StatelessWidget {
                   row: i,
                   column: j,
                   isAPossibleMove: state is GameboardSelectedPieceState
-                      ? state.piece
-                          .getPossibleMoves(state.gameBoard)
+                      ? state.gameBoard
+                          .getPossibleMoves(state.piece)
                           .any(((int, int) move) => move == (i, j))
                       : false,
                   onPressed: () {
@@ -49,8 +49,8 @@ class GameBoard extends StatelessWidget {
                     context.read<GameboardCubit>().unselectPiece();
                   } else if (state is GameboardSelectedPieceState &&
                       state.piece != piece) {
-                        if (state.piece
-                            .getPossibleMoves(state.gameBoard)
+                        if (state.gameBoard
+                            .getPossibleMoves(state.piece)
                             .any(((int, int) move) =>
                                 move == (piece.row, piece.column))) {
                           context.read<GameboardCubit>().moveSelectedPieceTo(

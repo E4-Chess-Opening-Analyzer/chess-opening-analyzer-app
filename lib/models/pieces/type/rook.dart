@@ -1,9 +1,9 @@
-import 'package:app/models/game_board.dart';
+import 'package:app/models/board/board_state.dart';
 import 'package:app/models/pieces/piece.dart';
 
 mixin Rook on Piece {
   @override
-  List<(int, int)> getRawPossibleMoves(GameBoard gameBoard) {
+  List<(int, int)> getRawPossibleMoves(BoardState boardState) {
     List<(int, int)> possibleMoves = <(int, int)>[];
 
     // Vertical and horizontal moves
@@ -12,7 +12,7 @@ mixin Rook on Piece {
       int newRow = row + dRow;
       int newCol = column + dCol;
       while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
-        Piece? targetPiece = gameBoard.getPieceAt(newRow, newCol);
+        Piece? targetPiece = boardState.getPieceAt(newRow, newCol);
         if (targetPiece == null) {
           possibleMoves.add((newRow, newCol));
         } else {
@@ -27,11 +27,5 @@ mixin Rook on Piece {
     }
 
     return possibleMoves;
-  }
-
-  @override
-  List<(int, int)> getPossibleMoves(GameBoard gameBoard) {
-    List<(int, int)> rawMoves = getRawPossibleMoves(gameBoard);
-    return gameBoard.filterMovesForCheck(this, rawMoves);
   }
 }

@@ -19,7 +19,7 @@ class GameboardCubit extends Cubit<GameboardState> {
       final Piece piece = selectedState.piece;
 
       // Check if the move is valid
-      final List<(int, int)> possibleMoves = piece.getPossibleMoves(state.gameBoard);
+      final List<(int, int)> possibleMoves = state.gameBoard.getPossibleMoves(piece);
       if (possibleMoves.any(((int, int) move) => move == (row, column))) {
         // Move the piece
         state.gameBoard.movePiece(piece, row, column);

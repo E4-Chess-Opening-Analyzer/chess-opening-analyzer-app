@@ -1,5 +1,5 @@
+import 'package:app/models/board/board_state.dart';
 import 'package:app/models/pieces/color/color.dart';
-import 'package:app/models/game_board.dart';
 
 abstract class Piece extends Color {
   Piece({
@@ -17,7 +17,6 @@ abstract class Piece extends Color {
     return 'Piece(row: $row, column: $column, hasMoved: $hasMoved)';
   }
 
-  List<(int, int)> getPossibleMoves(GameBoard gameBoard);
-  List<(int, int)> getRawPossibleMoves(GameBoard gameBoard);
+  List<(int, int)> getRawPossibleMoves(BoardState boardState);
   String getAssetPath();
 }
