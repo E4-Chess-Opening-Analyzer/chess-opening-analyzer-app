@@ -1,6 +1,5 @@
 import 'package:app/states/gameboard/gameboard_cubit.dart';
 import 'package:app/views/molecules/game_board.dart';
-import 'package:app/models/game_board.dart' as gb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,6 +1,6 @@
-import 'package:app/enums/chess_piece_type.dart';
 import 'package:app/views/atoms/chessboard.dart';
 import 'package:app/views/atoms/piece.dart';
+import 'package:app/models/pieces/piece.dart' as model_piece;
 import 'package:flutter/material.dart';
 
 class PositionnedPiece extends StatelessWidget {
@@ -12,7 +12,7 @@ class PositionnedPiece extends StatelessWidget {
     this.onPressed,
   });
 
-  final ChessPieceType piece;
+  final model_piece.Piece piece;
   final double row;
   final double column;
   final VoidCallback? onPressed;

@@ -1,5 +1,5 @@
 import 'package:app/models/game_board.dart';
-import 'package:app/models/piece.dart';
+import 'package:app/models/pieces/piece.dart';
 
 abstract class GameboardState {
   GameboardState(

@@ -1,5 +1,4 @@
-import 'package:app/enums/chess_piece_type.dart';
-import 'package:app/models/piece.dart';
+import 'package:app/models/pieces/piece.dart';
 import 'package:app/states/gameboard/gameboard_cubit.dart';
 import 'package:app/states/gameboard/gameboard_state.dart';
 import 'package:app/views/atoms/case.dart';
@@ -26,8 +25,8 @@ class GameBoard extends StatelessWidget {
                   row: i,
                   column: j,
                   isAPossibleMove: state is GameboardSelectedPieceState
-                      ? state.gameBoard
-                          .getPossibleMoves(state.piece)
+                      ? state.piece
+                          .getPossibleMoves(state.gameBoard)
                           .any(((int, int) move) => move == (i, j))
                       : false,
                   onPressed: () {
@@ -41,7 +40,7 @@ class GameBoard extends StatelessWidget {
               },
             for (Piece piece in state.gameBoard.pieces)
               PositionnedPiece(
-                piece: piece.type,
+                piece: piece,
                 row: piece.row.toDouble(),
                 column: piece.column.toDouble(),
                 onPressed: () {
@@ -50,8 +49,8 @@ class GameBoard extends StatelessWidget {
                     context.read<GameboardCubit>().unselectPiece();
                   } else if (state is GameboardSelectedPieceState &&
                       state.piece != piece) {
-                        if (state.gameBoard
-                            .getPossibleMoves(state.piece)
+                        if (state.piece
+                            .getPossibleMoves(state.gameBoard)
                             .any(((int, int) move) =>
                                 move == (piece.row, piece.column))) {
                           context.read<GameboardCubit>().moveSelectedPieceTo(
@@ -59,12 +58,12 @@ class GameBoard extends StatelessWidget {
                             piece.column,
                           );
                         } else {
-                          if (state.gameBoard.isLightPieceTurn() == piece.type.isLight) {
+                          if (state.gameBoard.isLightPieceTurn() == piece.isLight()) {
                             context.read<GameboardCubit>().selectPiece(piece);
                           }
                         }
                   } else {
-                    if (state.gameBoard.isLightPieceTurn() == piece.type.isLight) {
+                    if (state.gameBoard.isLightPieceTurn() == piece.isLight()) {
                       context.read<GameboardCubit>().selectPiece(piece);
                     }
                   }

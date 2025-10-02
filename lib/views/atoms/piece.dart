@@ -1,5 +1,5 @@
-import 'package:app/enums/chess_piece_type.dart';
 import 'package:app/views/atoms/chessboard.dart';
+import 'package:app/models/pieces/piece.dart' as model_piece;
 import 'package:flutter/material.dart';
 
 class Piece extends StatelessWidget {
@@ -8,12 +8,12 @@ class Piece extends StatelessWidget {
     super.key,
   });
   
-  final ChessPieceType piece;
+  final model_piece.Piece piece;
 
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      piece.imgPath,
+      piece.getAssetPath(),
       width: (MediaQuery.of(context).size.width - Chessboard.padding) / Chessboard.nbCasesRows,
     );
   }

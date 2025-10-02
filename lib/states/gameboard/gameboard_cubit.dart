@@ -1,4 +1,4 @@
-import 'package:app/models/piece.dart';
+import 'package:app/models/pieces/piece.dart';
 import 'package:app/states/gameboard/gameboard_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +19,7 @@ class GameboardCubit extends Cubit<GameboardState> {
       final Piece piece = selectedState.piece;
 
       // Check if the move is valid
-      final List<(int, int)> possibleMoves = state.gameBoard.getPossibleMoves(piece);
+      final List<(int, int)> possibleMoves = piece.getPossibleMoves(state.gameBoard);
       if (possibleMoves.any(((int, int) move) => move == (row, column))) {
         // Move the piece
         state.gameBoard.movePiece(piece, row, column);

@@ -1,4 +1,4 @@
-import 'package:app/models/piece.dart';
+import 'package:app/models/pieces/piece.dart';
 
 class Move {
   Move({
