@@ -10,7 +10,7 @@ on:
     branches: [ "main", "develop" ]
 
 jobs:
-  build:
+  analyze-and-release:
     runs-on: ubuntu-latest
 
     steps:
@@ -45,3 +45,14 @@ jobs:
       # want to change this to 'flutter test'.
       - name: Run tests
         run: flutter test
+
+      - name: Build apk
+        run: flutter build apk
+      
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          # Artifact name
+          name: last-release
+          # A file, directory or wildcard pattern that describes what to upload
+          path: build/app/outputs/flutter-apk/app-release.apk
