@@ -57,8 +57,12 @@ mixin King on Piece {
   List<(int, int)> _getCastlingMoves(BoardState boardState) {
     List<(int, int)> castlingMoves = <(int, int)>[];
     
-    if (hasMoved) return castlingMoves;
-    if (_isCurrentlyInCheck(boardState)) return castlingMoves;
+    if (hasMoved) {
+      return castlingMoves;
+    }
+    if (_isCurrentlyInCheck(boardState)) {
+      return castlingMoves;
+    }
 
     // Kingside castling
     Piece? kingsideRook = boardState.getPieceAt(row, 7);
@@ -146,7 +150,7 @@ mixin King on Piece {
         } else {
           // For other pieces, use their raw moves
           List<(int, int)> attackMoves = piece.getRawPossibleMoves(boardState);
-          if (attackMoves.any((move) => move == (targetRow, targetCol))) {
+          if (attackMoves.any(((int, int) move) => move == (targetRow, targetCol))) {
             return true;
           }
         }
