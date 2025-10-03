@@ -7,57 +7,57 @@ name: Dart
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
 
 jobs:
-  analyze-and-release:
+  analyze:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      # - uses: dart-lang/setup-dart@v1
+      
       - name: Install Flutter
-        # You may pin to the exact commit or the version.
-        # uses: britannio/action-install-flutter@a486b7e3148e54a76390d849100b9dee819ff810
         uses: britannio/action-install-flutter@v1.1
         with:
-              # The channel/version of Flutter to be used e.g., beta or 2.0.0
           version: 3.35.4
-          
 
       - name: Install dependencies
         run: flutter pub get
-
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
-
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
+        
       - name: Analyze project source
         run: flutter analyze
-
-      # Your project will need to have tests in test/ and a dependency on
-      # package:test for this step to succeed. Note that Flutter projects will
-      # want to change this to 'flutter test'.
+        
       - name: Run tests
         run: flutter test
+        
+  release: 
+    runs-on: ubuntu-latest
+    needs: analyze
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: Build apk
-        run: flutter build apk
-      
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.6.2
+      - name: Install Flutter
+        uses: britannio/action-install-flutter@v1.1
         with:
-          # Artifact name
-          name: release@v1.0.0
-          # A file, directory or wildcard pattern that describes what to upload
-          path: build/app/outputs/flutter-apk/app-release.apk
+          version: 3.35.4
+
+      - name: Build APK
+        run: flutter build apk      
       
-      - name: GitHub Releases
-        # You may pin to the exact commit or the version.
-        # uses: fnkr/github-action-ghr@96b1448dc6162f370067e1de51e856e733a76b4f
+      - name: Get version from pubspec.yaml
+        id: get_version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release@${{ steps.get_version.outputs.version }}
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: GitHub Release
         uses: fnkr/github-action-ghr@v1.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHR_TAG: v${{ steps.get_version.outputs.version }}
