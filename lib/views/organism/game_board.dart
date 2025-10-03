@@ -31,6 +31,12 @@ class GameBoard extends StatelessWidget {
                       : false,
                   onPressed: () {
                     if (state is GameboardSelectedPieceState) {
+                      print(state.moveToPgnService.getPgnFromMove(
+                        state.piece.row,
+                        state.piece.column,
+                        i,
+                        j,
+                      ));
                       context
                           .read<GameboardCubit>()
                           .moveSelectedPieceTo(i, j);
@@ -53,6 +59,12 @@ class GameBoard extends StatelessWidget {
                             .getPossibleMoves(state.piece)
                             .any(((int, int) move) =>
                                 move == (piece.row, piece.column))) {
+                          print(state.moveToPgnService.getPgnFromMove(
+                            state.piece.row,
+                            state.piece.column,
+                            piece.row,
+                            piece.column,
+                          ));
                           context.read<GameboardCubit>().moveSelectedPieceTo(
                             piece.row,
                             piece.column,

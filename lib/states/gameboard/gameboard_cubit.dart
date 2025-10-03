@@ -6,11 +6,11 @@ class GameboardCubit extends Cubit<GameboardState> {
   GameboardCubit() : super(GameboardInitialState());
 
   void selectPiece(Piece piece) {
-    emit(GameboardSelectedPieceState(state.gameBoard, piece));
+    emit(GameboardSelectedPieceState(state.gameBoard, piece, state.moveToPgnService));
   }
 
   void unselectPiece() {
-    emit(GameboardUnselectedPieceState(state.gameBoard));
+    emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService));
   }
 
   void moveSelectedPieceTo(int row, int column) {
@@ -25,10 +25,10 @@ class GameboardCubit extends Cubit<GameboardState> {
         state.gameBoard.movePiece(piece, row, column);
 
         // Update the game board state
-        emit(GameboardUnselectedPieceState(state.gameBoard));
+        emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService));
       } else {
         // Invalid move, just unselect the piece
-        emit(GameboardUnselectedPieceState(state.gameBoard));
+        emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService));
       }
     }
   }
