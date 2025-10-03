@@ -53,6 +53,11 @@ jobs:
         uses: actions/upload-artifact@v4.6.2
         with:
           # Artifact name
-          name: last-release
+          name: release@v1.0.0
           # A file, directory or wildcard pattern that describes what to upload
           path: build/app/outputs/flutter-apk/app-release.apk
+      
+      - name: GitHub Releases
+        # You may pin to the exact commit or the version.
+        # uses: fnkr/github-action-ghr@96b1448dc6162f370067e1de51e856e733a76b4f
+        uses: fnkr/github-action-ghr@v1.3
