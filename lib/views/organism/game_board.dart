@@ -4,6 +4,7 @@ import 'package:app/states/gameboard/gameboard_state.dart';
 import 'package:app/views/atoms/case.dart';
 import 'package:app/views/atoms/chessboard.dart';
 import 'package:app/views/molecules/positionned_piece.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,12 +32,14 @@ class GameBoard extends StatelessWidget {
                       : false,
                   onPressed: () {
                     if (state is GameboardSelectedPieceState) {
-                      print(state.moveToPgnService.getPgnFromMove(
+                      if (kDebugMode) {
+                        print(state.moveToPgnService.getPgnFromMove(
                         state.piece.row,
                         state.piece.column,
                         i,
                         j,
                       ));
+                      }
                       context
                           .read<GameboardCubit>()
                           .moveSelectedPieceTo(i, j);
@@ -59,12 +62,14 @@ class GameBoard extends StatelessWidget {
                             .getPossibleMoves(state.piece)
                             .any(((int, int) move) =>
                                 move == (piece.row, piece.column))) {
-                          print(state.moveToPgnService.getPgnFromMove(
+                          if (kDebugMode) {
+                            print(state.moveToPgnService.getPgnFromMove(
                             state.piece.row,
                             state.piece.column,
                             piece.row,
                             piece.column,
                           ));
+                          }
                           context.read<GameboardCubit>().moveSelectedPieceTo(
                             piece.row,
                             piece.column,
