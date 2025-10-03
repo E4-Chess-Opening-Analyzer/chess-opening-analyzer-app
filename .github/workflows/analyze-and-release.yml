@@ -83,8 +83,10 @@ jobs:
           path: build/app/outputs/bundle/release/app-release.aab
 
       - name: GitHub Release
-        uses: fnkr/github-action-ghr@v1.3
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.tag }}
+          name: Release v${{ steps.get_version.outputs.version }}
+          files: build/app/outputs/flutter-apk/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GHR_TAG: v${{ steps.get_version.outputs.tag }}
-          GHR_FORCE: "true"
