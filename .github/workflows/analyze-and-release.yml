@@ -87,3 +87,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHR_TAG: v${{ steps.get_version.outputs.tag }}
+          GHR_FORCE: "true"
