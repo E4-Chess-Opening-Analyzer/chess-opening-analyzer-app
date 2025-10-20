@@ -1,3 +1,5 @@
+import 'package:app/models/game_scrollview.dart';
+import 'package:app/models/game_triple_boxes.dart';
 import 'package:app/states/gameboard/gameboard_cubit.dart';
 import 'package:app/views/molecules/game_board.dart';
 import 'package:flutter/material.dart';
@@ -75,14 +77,18 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Column(children: [
+        GameScrollview(width: MediaQuery.of(context).size.width, text: "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 "),
+        Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: BlocProvider<GameboardCubit>(
           create: (BuildContext context) => GameboardCubit(),
           child: const GameBoard(),
         )
-      ),
+      ), GameTripleBoxes(move: "e5",whiteProb: 40,drawProb: 30,blackProb: 30)
+      ])
+      
     );
   }
 }
