@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
 class GameScrollview extends StatelessWidget {
-  final double width;
   final String text;
 
-  const GameScrollview({super.key, required this.width, required this.text});
+  const GameScrollview({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width * 0.9,
+      width: MediaQuery.of(context).size.width * 0.9,
       height: 50,
       child:SingleChildScrollView(
         scrollDirection: Axis.horizontal,
