@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class GameScrollview extends StatelessWidget {
+  const GameScrollview({required this.text, super.key});
+  
   final String text;
-
-  const GameScrollview({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class GameScrollview extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: Text(
           text,
-          style: TextStyle(fontSize: 24)
+          style: const TextStyle(fontSize: 24)
         )
       ),
     );

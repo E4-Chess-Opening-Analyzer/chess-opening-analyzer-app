@@ -6,11 +6,11 @@ class GameboardCubit extends Cubit<GameboardState> {
   GameboardCubit() : super(GameboardInitialState());
 
   void selectPiece(Piece piece) {
-    emit(GameboardSelectedPieceState(state.gameBoard, piece, state.moveToPgnService));
+    emit(GameboardSelectedPieceState(state.gameBoard, piece, state.moveToPgnService, state.pgn));
   }
 
   void unselectPiece() {
-    emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService));
+    emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService, state.pgn));
   }
 
   void moveSelectedPieceTo(int row, int column) {
@@ -21,14 +21,21 @@ class GameboardCubit extends Cubit<GameboardState> {
       // Check if the move is valid
       final List<(int, int)> possibleMoves = state.gameBoard.getPossibleMoves(piece);
       if (possibleMoves.any(((int, int) move) => move == (row, column))) {
+        String pgn = state.moveToPgnService.getPgnFromMove(
+          piece.row,
+          piece.column,
+          row,
+          column,
+        );
+
         // Move the piece
         state.gameBoard.movePiece(piece, row, column);
 
         // Update the game board state
-        emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService));
+        emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService, pgn));
       } else {
         // Invalid move, just unselect the piece
-        emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService));
+        emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService, state.pgn));
       }
     }
   }

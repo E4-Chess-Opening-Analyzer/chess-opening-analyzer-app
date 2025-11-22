@@ -6,22 +6,24 @@ abstract class GameboardState {
   GameboardState(
     this.gameBoard,
     this.moveToPgnService,
+    this.pgn,
   );
 
   GameBoard gameBoard;
   MoveToPgnService moveToPgnService;
+  String pgn = '';
 }
 
 class GameboardInitialState extends GameboardState {
-  GameboardInitialState() : super(GameBoard(), MoveToPgnService());
+  GameboardInitialState() : super(GameBoard(), MoveToPgnService(), '');
 }
 
 class GameboardUnselectedPieceState extends GameboardState {
-  GameboardUnselectedPieceState(super.gameBoard, super.moveToPgnService) : super();
+  GameboardUnselectedPieceState(super.gameBoard, super.moveToPgnService, super.pgn) : super();
 }
 
 class GameboardSelectedPieceState extends GameboardState {
-  GameboardSelectedPieceState(super.gameBoard, this.piece, super.moveToPgnService) : super();
+  GameboardSelectedPieceState(super.gameBoard, this.piece, super.moveToPgnService, super.pgn) : super();
 
   Piece piece;
 }
