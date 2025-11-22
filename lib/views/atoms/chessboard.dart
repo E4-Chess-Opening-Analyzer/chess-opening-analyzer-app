@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Chessboard extends StatelessWidget {
   const Chessboard({super.key});
 
-  static const int padding = 20;
+  static const int padding = 50;
   static const int nbCasesRows = 8;
   static const int nbCasesColumns = 8;
 

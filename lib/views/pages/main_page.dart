@@ -20,27 +20,34 @@ class MainPage extends StatelessWidget {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF1E1A4D),
         leading: const AppIcon(),
         title: const Text(
           'Chess Opening Analyzer',
           style: TextStyle(
             fontFamily: 'Ibarra Real Nova',
             fontSize: 24,
+            color: Colors.white,
           ),
         ),
       ),
-      body: Column(children: <Widget>[
-        BlocBuilder<GameboardCubit, GameboardState>(
-          builder: (BuildContext context, GameboardState state) =>  GameScrollview(text: state.pgn == '' ? 'The game start !' : state.pgn),
-        ),
-        const Center(
-          child: GameBoard(),
-        ),
-        const GameTripleBoxes(move: 'e4',whiteProb: 45,drawProb: 30,blackProb: 25),
-        const GameTripleBoxes(move: 'e3',whiteProb: 40,drawProb: 30,blackProb: 30),
-        const GameTripleBoxes(move: 'd4',whiteProb: 80,drawProb: 14,blackProb: 6),
-      ])
-      
+      body: Column(
+        spacing: 4.0,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsetsGeometry.only(top: 8.0, left: 8.0, right: 8.0),
+            child: BlocBuilder<GameboardCubit, GameboardState>(
+              builder: (BuildContext context, GameboardState state) =>  GameScrollview(text: state.pgn),
+            ),
+          ),
+          const Center(
+            child: GameBoard(),
+          ),
+          const GameTripleBoxes(move: 'e4',whiteProb: 45,drawProb: 30,blackProb: 25),
+          const GameTripleBoxes(move: 'e3',whiteProb: 40,drawProb: 30,blackProb: 30),
+          const GameTripleBoxes(move: 'd4',whiteProb: 80,drawProb: 14,blackProb: 6),
+        ],
+      ),
     );
   }
 }

@@ -10,11 +10,12 @@ class GameScrollview extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.9,
       height: 50,
-      child:SingleChildScrollView(
+      child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
+        reverse: true,
         child: Text(
           text,
-          style: const TextStyle(fontSize: 24)
+          style: const TextStyle(fontSize: 18),
         )
       ),
     );
