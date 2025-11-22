@@ -38,16 +38,16 @@ class GameTripleBoxes extends StatelessWidget {
           if (bools[i]) {
             if (nums[(i+1)%3] - (threshold - nums[i])/2 < threshold){
               nums[(i+2)%3] -= (threshold - nums[i]);
-              nums[i] = threshold as double;
+              nums[i] = threshold.toDouble();
             }
             else if (nums[(i+2)%3] - (threshold - nums[i])/2 < threshold){
               nums[(i+1)%3] -= (threshold - nums[i]);
-              nums[i] = threshold as double;
+              nums[i] = threshold.toDouble();
             }
             else{
               nums[(i+1)%3] -= (threshold - nums[i])/2;
               nums[(i+2)%3] -= (threshold - nums[i])/2;
-              nums[i] = threshold as double;
+              nums[i] = threshold.toDouble();
             }
           }
         }
@@ -57,8 +57,8 @@ class GameTripleBoxes extends StatelessWidget {
         for(int i = 0; i < nums.length; i++) {
           if (!bools[i]) {
             nums[i] -= (threshold - nums[(i+1)%3]) + (threshold - nums[(i+2)%3]);
-            nums[(i+1)%3] = threshold as double;
-            nums[(i+2)%3] = threshold as double;
+            nums[(i+1)%3] = threshold.toDouble();
+            nums[(i+2)%3] = threshold.toDouble();
           }
         }
         return nums;
