@@ -1,7 +1,9 @@
 import 'package:app/states/gameboard/gameboard_cubit.dart';
+import 'package:app/states/moves/moves_cubit.dart';
 import 'package:app/views/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nested/nested.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,9 +23,16 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Inria sans',
       ),
-      home: BlocProvider<GameboardCubit>(
-          create: (BuildContext context) => GameboardCubit(),
-          child: const MainPage(),
+      home: MultiBlocProvider(
+        providers: <SingleChildWidget>[
+          BlocProvider<GameboardCubit>(
+            create: (BuildContext context) => GameboardCubit(),
+          ),
+          BlocProvider<MovesCubit>(
+            create: (BuildContext context) => MovesCubit(),
+          ),
+        ],
+        child: const MainPage(),
       ),
     );
   }

@@ -1,4 +1,6 @@
+import 'package:app/models/game_board.dart';
 import 'package:app/models/pieces/piece.dart';
+import 'package:app/services/move_to_pgn_service.dart';
 import 'package:app/states/gameboard/gameboard_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +15,7 @@ class GameboardCubit extends Cubit<GameboardState> {
     emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService, state.pgn));
   }
 
-  void moveSelectedPieceTo(int row, int column) {
+  String moveSelectedPieceTo(int row, int column) {
     if (state is GameboardSelectedPieceState) {
       final GameboardSelectedPieceState selectedState = state as GameboardSelectedPieceState;
       final Piece piece = selectedState.piece;
@@ -33,10 +35,16 @@ class GameboardCubit extends Cubit<GameboardState> {
 
         // Update the game board state
         emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService, pgn));
+        return pgn;
       } else {
         // Invalid move, just unselect the piece
         emit(GameboardUnselectedPieceState(state.gameBoard, state.moveToPgnService, state.pgn));
       }
     }
+    return state.pgn;
+  }
+
+  void resetGame() {
+    emit(GameboardUnselectedPieceState(GameBoard(), MoveToPgnService(), ''));
   }
 }

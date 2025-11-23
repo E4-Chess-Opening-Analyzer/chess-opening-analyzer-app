@@ -1,6 +1,8 @@
 import 'package:app/models/pieces/piece.dart';
+import 'package:app/services/get_moves_service.dart';
 import 'package:app/states/gameboard/gameboard_cubit.dart';
 import 'package:app/states/gameboard/gameboard_state.dart';
+import 'package:app/states/moves/moves_cubit.dart';
 import 'package:app/views/atoms/case.dart';
 import 'package:app/views/atoms/chessboard.dart';
 import 'package:app/views/molecules/positionned_piece.dart';
@@ -31,9 +33,16 @@ class GameBoard extends StatelessWidget {
                       : false,
                   onPressed: () {
                     if (state is GameboardSelectedPieceState) {
-                      context
-                          .read<GameboardCubit>()
-                          .moveSelectedPieceTo(i, j);
+                      String pgn = context.read<GameboardCubit>().moveSelectedPieceTo(i, j);
+
+                      MovesCubit movesCubit = context.read<MovesCubit>();
+                      List<String> movesList = pgn.split(' ');
+                      movesList.removeWhere((String move) => move.isEmpty || move[move.length - 1] == '.');
+                      GetMovesService.getMoves(movesList).then((Map<String, Map<String, int>> movesData) {
+                        movesCubit.loadMovesData(movesData);
+                      }).catchError((Object error) {
+                        movesCubit.setErrorState();
+                      });
                     }
                   },
                 ),
@@ -53,10 +62,18 @@ class GameBoard extends StatelessWidget {
                             .getPossibleMoves(state.piece)
                             .any(((int, int) move) =>
                                 move == (piece.row, piece.column))) {
-                          context.read<GameboardCubit>().moveSelectedPieceTo(
+                          String pgn = context.read<GameboardCubit>().moveSelectedPieceTo(
                             piece.row,
                             piece.column,
                           );
+                          MovesCubit movesCubit = context.read<MovesCubit>();
+                          List<String> movesList = pgn.split(' ');
+                          movesList.removeWhere((String move) => move.isEmpty || move[move.length - 1] == '.');
+                          GetMovesService.getMoves(movesList).then((Map<String, Map<String, int>> movesData) {
+                            movesCubit.loadMovesData(movesData);
+                          }).catchError((Object error) {
+                            movesCubit.setErrorState();
+                          });
                         } else {
                           if (state.gameBoard.isLightPieceTurn() == piece.isLight()) {
                             context.read<GameboardCubit>().selectPiece(piece);

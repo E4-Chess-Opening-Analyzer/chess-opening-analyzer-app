@@ -64,11 +64,12 @@ class GameTripleBoxes extends StatelessWidget {
         return nums;
       }
     }
-    List<double> numList = adjustNums(whiteProb, drawProb, blackProb, 8);
+    List<double> numList = adjustNums(whiteProb * 100, drawProb * 100, blackProb * 100, 8);
 
-    int intWhiteProb = whiteProb.toInt();
-    int intDrawProb = drawProb.toInt();
-    int intBlackProb = blackProb.toInt();
+    // Convert to percentages FIRST, then to integers
+    int intWhiteProb = (whiteProb * 100).round(); // 0.359 → 35.9 → 36
+    int intDrawProb = (drawProb * 100).round();   // 0.041 → 4.1 → 4
+    int intBlackProb = (blackProb * 100).round(); // 0.600 → 60.0 → 60
     
     return Row(children: <Widget>[
       SizedBox(width: width*0.025),
